@@ -1,2 +1,2 @@
-# imd
-DrupalEasy Repository site and custom modules - IMD Course
+# Drupal 9 site and module development from IMD Course
+DrupalEasy Repository site and multiple custom modules
