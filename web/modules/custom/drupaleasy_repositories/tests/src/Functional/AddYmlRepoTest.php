@@ -3,6 +3,9 @@
 namespace Drupal\Tests\drupaleasy_repositories\Functional;
 
 use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\drupaleasy_repositories\Traits\RepositoryContentTypeTrait;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
  * Test description.
@@ -10,6 +13,7 @@ use Drupal\Tests\BrowserTestBase;
  * @group drupaleasy_repositories
  */
 class AddYmlRepoTest extends BrowserTestBase {
+  use RepositoryContentTypeTrait;
 
   /**
    * {@inheritdoc}
@@ -43,6 +47,27 @@ class AddYmlRepoTest extends BrowserTestBase {
     // The root user can be asseessed with $this->rootuser.
     $admin_user = $this->drupalCreateUser(['drupaleasy repositories configure']);
     $this->drupalLogin($admin_user);
+
+    $this->createRepositoryContentType();
+
+    FieldStorageConfig::create([
+      'field_name' => 'field_repository_url',
+      'type' => 'link',
+      'entity_type' => 'user',
+      'cardinality' => -1,
+    ])->save();
+    FieldConfig::create([
+      'field_name' => 'field_repository_url',
+      'entity_type' => 'user',
+      'bundle' => 'user',
+      'label' => 'Repository URL',
+    ])->save();
+
+    /** @var \Drupal\Core\Entity\EntityDisplayRepository $entity_display_repository  */
+    $entity_display_repository = \Drupal::service('entity_display.repository');
+    $entity_display_repository->getFormDisplay('user', 'user', 'default')
+      ->setComponent('field_repository_url', ['type' => 'link_default'])
+      ->save();
 
   }
 
