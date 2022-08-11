@@ -23,12 +23,7 @@ class AddYmlRepoTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = [
-    'drupaleasy_repositories',
-    'user',
-    'node',
-    'link',
-  ];
+  protected static $modules = ['drupaleasy_repositories'];
 
   /**
    * {@inheritdoc}
@@ -48,8 +43,10 @@ class AddYmlRepoTest extends BrowserTestBase {
     $admin_user = $this->drupalCreateUser(['drupaleasy repositories configure']);
     $this->drupalLogin($admin_user);
 
-    $this->createRepositoryContentType();
+    // Create the Repository content type.
+    // $this->createRepositoryContentType();.
 
+    // Create the "Repository URL" field for user profiles.
     FieldStorageConfig::create([
       'field_name' => 'field_repository_url',
       'type' => 'link',
@@ -75,10 +72,11 @@ class AddYmlRepoTest extends BrowserTestBase {
    * Test callback.
    */
   public function testSomething() {
-    // $admin_user = $this->drupalCreateUser(['access administration pages']);
-    // $this->drupalLogin($admin_user);
+    $another_user = $this->drupalCreateUser(['access administration pages']);
+    $this->drupalLogin($another_user);
     $this->drupalGet('admin');
-    $this->assertSession()->elementExists('xpath', '//h1[text() = "Administration"]');
+    $this->assertSession()->elementExists('xpath', '//h1[text()
+    = "Administration"]');
   }
 
 }
