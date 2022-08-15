@@ -67,7 +67,7 @@ trait RepositoryContentTypeTrait {
       'cardinality' => 1,
     ])->save();
     FieldConfig::create([
-'field_name' => 'field_number_of_issues',
+      'field_name' => 'field_number_of_issues',
       'entity_type' => 'node',
       'bundle' => 'repository',
       'label' => 'Number of open issues',

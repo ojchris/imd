@@ -27,7 +27,7 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state) {
+  public function buildForm(array $form, FormStateInterface $form_state):array {
     /* $form['example'] = [
     '#type' => 'textfield',
     '#title' => $this->t('Example'),
@@ -36,14 +36,17 @@ class SettingsForm extends ConfigFormBase {
     ];
     return parent::buildForm($form, $form_state); */
 
+    $repositories_config = $this->config('drupaleasy_repositories.settings');
+
     $form['repositories'] = [
       '#type' => 'checkboxes',
       '#options' => [
-        'yml_remote' => "Yml remote",
-        'github' => "Github",
-        'bitbucket' => "Bitbucket",
+        'yml_remote' => $this->t('Yml remote'),
+        'github' => $this->t('Github'),
+        'bitbucket' => $this->t('Bitbucket'),
       ],
       '#title' => $this->t('Repositories'),
+      '#default_value' => $repositories_config->get('repositories') ?: [],
     ];
 
     return parent::buildForm($form, $form_state);
@@ -53,19 +56,19 @@ class SettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
+  /* public function validateForm(array &$form, FormStateInterface $form_state) {
     if ($form_state->getValue('example') != 'example') {
       $form_state->setErrorByName('example', $this->t('The value is not correct.'));
     }
     parent::validateForm($form, $form_state);
-  }
+  }*/
 
   /**
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $this->config('drupaleasy_repositories.settings')
-      ->set('example', $form_state->getValue('example'))
+      ->set('repositories', $form_state->getValue('repositories'))
       ->save();
     parent::submitForm($form, $form_state);
   }
