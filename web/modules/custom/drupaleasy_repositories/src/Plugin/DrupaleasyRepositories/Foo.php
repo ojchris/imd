@@ -2,7 +2,7 @@
 
 namespace Drupal\drupaleasy_repositories\Plugin\DrupaleasyRepositories;
 
-use Drupal\drupaleasy_repositories\DrupaleasyRepositoriesPluginBase;
+use Drupal\drupaleasy_repositories\DrupaleasyRespositories\DrupaleasyRepositoriesPluginBase;
 
 /**
  * Plugin implementation of the drupaleasy_repositories.

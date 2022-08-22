@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\drupaleasy_repositories;
+namespace Drupal\drupaleasy_repositories\DrupaleasyRespositories;
 
 /**
  * Interface for drupaleasy_repositories plugins.
