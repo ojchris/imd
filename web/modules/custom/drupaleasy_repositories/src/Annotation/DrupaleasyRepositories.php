@@ -25,7 +25,7 @@ class DrupaleasyRepositories extends Plugin {
    *
    * @ingroup plugin_translatable
    */
-  public $title;
+  public $label;
 
   /**
    * The description of the plugin.
