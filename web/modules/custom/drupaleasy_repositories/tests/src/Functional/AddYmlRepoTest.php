@@ -162,11 +162,11 @@ class AddYmlRepoTest extends BrowserTestBase {
     $node = $node_storage->load(reset($results));
 
     // Check values.
-    $session->assert($node->field_machine_name->value == 'batman-repo', 'Machine name matched.');
-    $session->assert($node->field_source->value == 'yml_remote', 'Source matched.');
-    $session->assert($node->title->value == 'The Batman repository', 'Label matched.');
-    $session->assert($node->field_description->value == 'This is where Batman keeps all his crime-fighting code.', 'Description matched.');
-    $session->assert($node->field_number_of_issues->value == '6', 'Number of issues matched.');
+    $session->assert($node->field_machine_name->value == 'batman-repo', 'Machine name does not match.');
+    $session->assert($node->field_source->value == 'yml_remote', 'Source does not match.');
+    $session->assert($node->title->value == 'The Batman repository', 'Label does not match.');
+    $session->assert($node->field_description->value == 'This is where Batman keeps all his crime-fighting code.', 'Description does not match.');
+    $session->assert($node->field_number_of_issues->value == '6', 'Number of issues does not match.');
 
   }
 
