@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\drupaleasy_repositories\DrupaleasyRespositories;
+namespace Drupal\drupaleasy_repositories\DrupaleasyRepositories;
 
 use Drupal\Component\Plugin\PluginBase;
 

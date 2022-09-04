@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\drupaleasy_repositories\DrupaleasyRespositories;
+namespace Drupal\drupaleasy_repositories\DrupaleasyRepositories;
 
 /**
  * Interface for drupaleasy_repositories plugins.
@@ -44,6 +44,5 @@ interface DrupaleasyRepositoriesInterface {
    *   The metadata of each repository.
    */
   public function getRepo(string $uri): array;
-
 
 }
