@@ -54,13 +54,17 @@ class DrupaleasyRepositoriesService {
    *   The configuration factory interface.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity_type.manager service.
+   * @param bool $dry_run
+   *   The dry_run parameter that specifies whether to save node changes.
    */
   public function __construct(PluginManagerInterface $plugin_manager_drupaleasy_repositories,
    ConfigFactoryInterface $config_factory,
-   EntityTypeManagerInterface $entity_type_manager) {
+   EntityTypeManagerInterface $entity_type_manager,
+   bool $dry_run) {
     $this->pluginManagerDrupaleasyRepositories = $plugin_manager_drupaleasy_repositories;
     $this->configFactory = $config_factory;
     $this->entityTypeManager = $entity_type_manager;
+    $this->dryRun = $dry_run;
   }
 
   /**
