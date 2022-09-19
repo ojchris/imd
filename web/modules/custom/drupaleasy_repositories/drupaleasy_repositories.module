@@ -2,6 +2,7 @@
 
 use Drupal\Core\Render\Element;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\user\Entity\User;
 
 /**
  * @file
@@ -12,11 +13,15 @@ use Drupal\Core\Form\FormStateInterface;
  * Implements hook_form_FORM_ID_alter().
  */
 function drupaleasy_repositories_form_user_form_alter(&$form, $form_state, $form_id): void {
+  $form['#validate'][] = '_drupaleasy_repositories_user_form_validate';
+
   if (!empty($form['field_repository_url']['widget'])) {
     foreach (Element::children($form['field_repository_url']['widget']) as $el_index) {
       $form['field_repository_url']['widget'][$el_index]['#process'][] = '_drupaleasy_repositories_url_help_text';
     }
   }
+
+  $form['actions']['submit']['#submit'][] = '_drupaleasy_repositories_user_form_submit';
 }
 
 /**
@@ -40,5 +45,42 @@ function _drupaleasy_repositories_url_help_text(array &$element, FormStateInterf
   }
   $element['uri']['#description_display'] = 'before';
   return $element;
+}
+
+/**
+ * Custom validation handler for user profile form.
+ *
+ * @param array $form
+ *   The form.
+ * @param Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function _drupaleasy_repositories_user_form_validate(array $form, FormStateInterface &$form_state): void {
+  /** @var \Drupal\drupaleasy_repositories\DrupaleasyRepositoriesService $repository_service */
+  $repository_service = \Drupal::service('drupaleasy_repositories.service');
+  $account = \Drupal::currentUser();
+  $error = $repository_service->validateRepositoryUrls($form_state->getValue('field_repository_url'), $account->id());
+
+  if ($error) {
+    $form_state->setError(
+      $form['field_repository_url'],
+      $error,
+    );
+  }
+}
+
+/**
+ * Custom submit handler for user profile form.
+ *
+ * @param array $form
+ *   The form.
+ * @param Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function _drupaleasy_repositories_user_form_submit(array $form, FormStateInterface &$form_state): void {
+  /** @var \Drupal\drupaleasy_repositories\DrupaleasyRepositoriesService $repository_service */
+  $repository_service = \Drupal::service('drupaleasy_repositories.service');
+  $account = User::load($form_state->getValue('uid'));
+  $repository_service->updateRepositories($account);
 }
 
