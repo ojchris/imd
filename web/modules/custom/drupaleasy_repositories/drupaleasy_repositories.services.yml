@@ -8,4 +8,4 @@ services:
     arguments: ['@plugin.manager.drupaleasy_repositories', '@config.factory', '@entity_type.manager', '%drupaleasy_repositories.dry_run%']
 
 parameters:
-  drupaleasy_repositories.dry_run: true
+  drupaleasy_repositories.dry_run: false
