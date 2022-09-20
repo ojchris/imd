@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.repository.field_description_
+    - field.field.node.repository.field_description
     - field.field.node.repository.field_hash
     - field.field.node.repository.field_machine_name
     - field.field.node.repository.field_number_of_open_issues
