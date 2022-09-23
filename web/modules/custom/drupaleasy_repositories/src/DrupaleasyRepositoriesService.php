@@ -7,6 +7,9 @@ use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Drupal\drupaleasy_repositories\Event\RepoUpdatedEvent;
+use Drupal\node\Entity\Node;
 
 /**
  * Service description.
@@ -46,6 +49,13 @@ class DrupaleasyRepositoriesService {
   protected bool $dryRun = FALSE;
 
   /**
+   * Drupal's event dispatcher service.
+   *
+   * @var \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher
+   */
+  protected ContainerAwareEventDispatcher $eventDispatcher;
+
+  /**
    * Constructs a DrupaleasyRepositories object.
    *
    * @param \Drupal\Component\Plugin\PluginManagerInterface $plugin_manager_drupaleasy_repositories
@@ -56,15 +66,19 @@ class DrupaleasyRepositoriesService {
    *   The entity_type.manager service.
    * @param bool $dry_run
    *   The dry_run parameter that specifies whether to save node changes.
+   * @param \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher $event_dispatcher
+   *   Drupal's event dispatcher service.
    */
   public function __construct(PluginManagerInterface $plugin_manager_drupaleasy_repositories,
    ConfigFactoryInterface $config_factory,
    EntityTypeManagerInterface $entity_type_manager,
-   bool $dry_run) {
+   bool $dry_run,
+   ContainerAwareEventDispatcher $event_dispatcher) {
     $this->pluginManagerDrupaleasyRepositories = $plugin_manager_drupaleasy_repositories;
     $this->configFactory = $config_factory;
     $this->entityTypeManager = $entity_type_manager;
     $this->dryRun = $dry_run;
+    $this->eventDispatcher = $event_dispatcher;
   }
 
   /**
@@ -280,7 +294,7 @@ class DrupaleasyRepositoriesService {
           $node->set('field_hash', $hash);
           if (!$this->dryRun) {
             $node->save();
-            // $this->repoUpdated($node, 'updated');
+            $this->repoUpdated($node, 'updated');
           }
         }
       }
@@ -300,7 +314,7 @@ class DrupaleasyRepositoriesService {
         ]);
         if (!$this->dryRun) {
           $node->save();
-          // $this->repoUpdated($node, 'created');
+          $this->repoUpdated($node, 'created');
         }
       }
     }
@@ -340,11 +354,24 @@ class DrupaleasyRepositoriesService {
       foreach ($nodes as $node) {
         if (!$this->dryRun) {
           $node->delete();
-          //$this->repoUpdated($node, 'deleted');
+          $this->repoUpdated($node, 'deleted');
         }
       }
     }
     return TRUE;
+  }
+
+  /**
+   * Perform tasks when a repository is created, updated, or deleted.
+   *
+   * @param \Drupal\node\Entity\Node $node
+   *   The node that was updated.
+   * @param string $action
+   *   The action that was performed on the node: updated, created, or deleted.
+   */
+  protected function repoUpdated(Node $node, string $action) {
+    $event = new RepoUpdatedEvent($node, $action);
+    $this->eventDispatcher->dispatch($event, RepoUpdatedEvent::REPO_UPDATED);
   }
 
 }

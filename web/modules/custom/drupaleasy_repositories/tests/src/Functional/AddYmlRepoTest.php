@@ -176,7 +176,7 @@ class AddYmlRepoTest extends BrowserTestBase {
    * This tests that a yml-based repo can be added to a user's profile and
    * that a repository node is successfully created upon saving the profile.
    *
-   * @return void
+   * @test
    */
   public function testRemoveYmlRepo(): void {
     // Create and login as a Drupal user with permission to access
