@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "02d0a848eb91756ac52e86e7b258c439",
+    "content-hash": "dd9e5cde1e6374105a3a7c2700c760fc",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2331,6 +2331,35 @@
                 "source": "https://gitlab.com/drupalspoons/devel",
                 "issues": "https://gitlab.com/drupalspoons/devel/-/issues",
                 "slack": "https://drupal.slack.com/archives/C012WAW1MH6"
+            }
+        },
+        {
+            "name": "drupaleasy/drupaleasy_notify",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "./modules/drupaleasy_notify",
+                "reference": "162b57ef62f33558dae937cd903aa3fa0eb226ce"
+            },
+            "require": {
+                "drupaleasy/drupaleasy_repositories": "^1.0"
+            },
+            "type": "drupal-custom-module",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "drupaleasy/drupaleasy_repositories",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "./modules/drupaleasy_repositories",
+                "reference": "c985d57ca5a4416c61f5518628a2e8740c592e2f"
+            },
+            "type": "drupal-custom-module",
+            "transport-options": {
+                "relative": true
             }
         },
         {
