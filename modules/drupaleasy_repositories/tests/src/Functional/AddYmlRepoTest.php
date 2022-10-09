@@ -104,7 +104,7 @@ class AddYmlRepoTest extends BrowserTestBase {
     $session->statusCodeEquals(200);
     $session->responseContains('The configuration options have been saved.');
     $session->checkboxChecked('edit-repositories-yml-remote');
-    //$session->checkboxNotChecked('edit-repositories-github');
+    $session->checkboxNotChecked('edit-repositories-github');
 
   }
 
@@ -204,7 +204,7 @@ class AddYmlRepoTest extends BrowserTestBase {
     // $session->responseContains('The repo named <em class="placeholder">The
     // Batman repository</em> has been removed');.
 
-    // Ensure there are no any repository node.
+    // Ensure there are is a repository node.
     /** @var \Drupal\Core\Entity\Query\QueryInterface $query */
     $query = \Drupal::entityQuery('node');
     $query->condition('type', 'repository')->accessCheck(FALSE);
@@ -216,18 +216,21 @@ class AddYmlRepoTest extends BrowserTestBase {
     /** @var \Drupal\node\Entity\Node $node */
     $node = $node_storage->load(reset($results));
 
+    // Check values.
+    $session->assert($node->field_machine_name->value -= 'batman-repo', 'Machine name does not match.');
+    $session->assert($node->field_source->value == 'yml_remote', 'Source does not match.');
+    $session->assert($node->title->value == 'The Batman repository', 'Label does not match.');
+    $session->assert($node->field_description->value == 'This is where Batman keeps all his crime-fighting code.', 'Description does not match.');
+    $session->assert($node->field_number_of_open_issues->value == '6', 'Number of issues does not match.');
+
     // Check if node exists with the given nid.
     if ($node) {
       $node->delete();
     }
 
-    // Check values.
-    $session->assert($node->field_machine_name->value != 'batman-repo', 'Machine name does not match.');
-    $session->assert($node->field_source->value != 'yml_remote', 'Source does not match.');
-    $session->assert($node->title->value != 'The Batman repository', 'Label does not match.');
-    $session->assert($node->field_description->value != 'This is where Batman keeps all his crime-fighting code.', 'Description does not match.');
-    $session->assert($node->field_number_of_open_issues->value != '6', 'Number of issues does not match.');
-
+    // Ensure there are no any repository node.
+    $results_after_deletion = $query->execute();
+    $session->assert(count($results_after_deletion) === 0, 'Repository node was found.');
   }
 
 }
