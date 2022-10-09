@@ -279,7 +279,8 @@ class DrupaleasyRepositoriesService {
       $results = $query->execute();
 
       if ($results) {
-        // If we get here, a repository node exists for this repository machine name.
+        // If we get here, a repository node exists for this repository machine
+        // name.
         /** @var \Drupal\node\NodeInterface $node */
         $node = $node_storage->load(reset($results));
 
@@ -288,7 +289,7 @@ class DrupaleasyRepositoriesService {
           $node->setTitle($info['label']);
           $node->set('field_description', $info['description']);
           $node->set('field_machine_name', $key);
-          $node->set('field_num_open_issues', $info['num_open_issues']);
+          $node->set('field_number_of_open_issues', $info['num_open_issues']);
           $node->set('field_source', $info['source']);
           $node->set('field_url', $info['url']);
           $node->set('field_hash', $hash);
@@ -307,7 +308,7 @@ class DrupaleasyRepositoriesService {
           'title' => $info['label'],
           'field_description' => $info['description'],
           'field_machine_name' => $key,
-          'field_num_open_issues' => $info['num_open_issues'],
+          'field_number_of_open_issues' => $info['num_open_issues'],
           'field_source' => $info['source'],
           'field_url' => $info['url'],
           'field_hash' => $hash,
