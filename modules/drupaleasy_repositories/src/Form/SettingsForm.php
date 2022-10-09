@@ -44,7 +44,6 @@ class SettingsForm extends ConfigFormBase {
     $this->repositoriesManager = $drupaleasy_repositories_manager;
   }
 
-
   /**
    * {@inheritdoc}
    */
