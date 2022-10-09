@@ -20,11 +20,36 @@ class YmlRemoteTest extends UnitTestCase {
   protected YmlRemote $ymlRemote;
 
   /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface|\PHPUnit\Framework\MockObject\MockObject
+   */
+  protected $messenger;
+
+  /**
+   * The Key repository service.
+   *
+   * @var \Drupal\key\KeyRepositoryInterface|\PHPUnit\Framework\MockObject\MockObject
+   */
+  protected $keyRepository;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->ymlRemote = new YmlRemote([], '', []);
+
+    // Mock the messenger object.
+    $this->messenger = $this->getMockBuilder('\Drupal\Core\Messenger\MessengerInterface')
+      ->disableOriginalConstructor()
+      ->getMock();
+
+    // Mock the key.repository object.
+    $this->keyRepository = $this->getMockBuilder('\Drupal\key\KeyRepositoryInterface')
+      ->disableOriginalConstructor()
+      ->getMock();
+
+    $this->ymlRemote = new YmlRemote([], '', [], $this->messenger, $this->keyRepository);
   }
 
   /**
@@ -103,10 +128,10 @@ class YmlRemoteTest extends UnitTestCase {
    * @test
    */
   public function testGetRepo(): void {
-      $repo = $this->ymlRemote->getRepo(__DIR__ . '/../../assets/batman-repo.yml');
-      $repo = reset($repo);
-      self::assertEquals('The Batman repository', $repo['label'], 'Label does not match.');
-      self::assertEquals('This is where Batman keeps all his crime-fighting code.', $repo['description'], 'Description does not match.');
-    }
+    $repo = $this->ymlRemote->getRepo(__DIR__ . '/../../assets/batman-repo.yml');
+    $repo = reset($repo);
+    self::assertEquals('The Batman repository', $repo['label'], 'Label does not match.');
+    self::assertEquals('This is where Batman keeps all his crime-fighting code.', $repo['description'], 'Description does not match.');
+  }
 
 }
